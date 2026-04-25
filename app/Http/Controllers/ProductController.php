@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -13,14 +14,25 @@ class ProductController extends Controller
 {
     public function index()
     {
-        // Menampilkan produk milik user yang sedang login
-        $products = Product::where('user_id', Auth::id())->get();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            // Admin melihat produk yang dia buat sendiri
+            $products = Product::where('user_id', $user->id)->get();
+        } else {
+            // User biasa hanya melihat produk yang dibuat oleh admin
+            $products = Product::whereHas('user', function ($query) {
+                $query->where('role', 'admin');
+            })->get();
+        }
+
         return view('product.index', compact('products'));
     }
 
     public function create()
     {
-        return view('product.create');
+        $categories = Category::all();
+        return view('product.create', compact('categories'));
     }
 
     public function store(StoreProductRequest $request)
@@ -28,10 +40,11 @@ class ProductController extends Controller
 
         // Insert ke database
         Product::create([
-            'user_id' => Auth::id(),
-            'name'    => $request->name,
-            'qty'     => $request->qty,
-            'price'   => $request->price,
+            'user_id'     => Auth::id(),
+            'category_id' => $request->category_id,
+            'name'        => $request->name,
+            'qty'         => $request->qty,
+            'price'       => $request->price,
         ]);
 
         return redirect()->route('product.index')->with('success', 'Data produk berhasil ditambahkan!');
@@ -47,7 +60,8 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         Gate::authorize('update', $product);
-        return view('product.edit', compact('product'));
+        $categories = Category::all();
+        return view('product.edit', compact('product', 'categories'));
     }
 
     public function update(UpdateProductRequest $request, string $id)
@@ -57,9 +71,10 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         Gate::authorize('update', $product);
         $product->update([
-            'name'  => $request->name,
-            'qty'   => $request->qty,
-            'price' => $request->price,
+            'category_id' => $request->category_id,
+            'name'        => $request->name,
+            'qty'         => $request->qty,
+            'price'       => $request->price,
         ]);
 
         return redirect()->route('product.index')->with('success', 'Data produk berhasil diperbarui!');

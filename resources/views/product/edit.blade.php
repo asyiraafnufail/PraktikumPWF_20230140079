@@ -14,9 +14,22 @@
                     @method('PUT')
                     
                     <div class="mb-4">
-                        <label class="block text-gray-700">Nama Produk</label>
-                        <input type="text" name="name" value="{{ old('name', $product->name) }}" class="w-full mt-1 border-gray-300 rounded-md shadow-sm">
-                        @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama Produk</label>
+                        <input type="text" name="name" value="{{ old('name', $product->name) }}" class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        @error('name') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Kategori</label>
+                        <select name="category_id" class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-4">

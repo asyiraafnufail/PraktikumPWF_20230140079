@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/product/export', [ProductController::class, 'export'])->name('product.export')->middleware('can:export-product');
     Route::resource('product', ProductController::class);
+    Route::resource('category', CategoryController::class);
 });
 
 Route::get('/about', [AboutController::class, 'index'])

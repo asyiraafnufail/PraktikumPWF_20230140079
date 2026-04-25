@@ -24,8 +24,10 @@
                     <p class="mt-1 text-gray-600">Rp {{ number_format($product->price, 2, ',', '.') }}</p>
                 </div>
 
-                <div class="mt-6">
+                <div class="mt-6 flex items-center space-x-4">
                     <a href="{{ route('product.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">Kembali</a>
+                    <x-edit-button :url="route('product.edit', $product->id)" />
+                    <x-delete-button :url="route('product.destroy', $product->id)" />
                 </div>
 
             </div>

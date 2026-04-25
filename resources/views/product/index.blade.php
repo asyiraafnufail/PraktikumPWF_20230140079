@@ -41,13 +41,7 @@
                             <td class="border-b py-2 px-4">{{ $item->qty }}</td>
                             <td class="border-b py-2 px-4">Rp {{ number_format($item->price, 2, ',', '.') }}</td>
                             <td class="border-b py-2 px-4">
-                                <a href="{{ route('product.show', $item->id) }}" class="text-blue-500 hover:underline">View</a> | 
-                                <a href="{{ route('product.edit', $item->id) }}" class="text-yellow-500 hover:underline">Edit</a> | 
-                                <form action="{{ route('product.destroy', $item->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                                </form>
+                                <a href="{{ route('product.show', $item->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 inline-block">View</a>
                             </td>
                         </tr>
                         @empty

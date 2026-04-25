@@ -15,7 +15,13 @@
                     </div>
                 @endif
 
-                <a href="{{ route('product.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Tambah Produk</a>
+                <div class="flex space-x-2">
+                    <a href="{{ route('product.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Tambah Produk</a>
+                    
+                    @can('export-product')
+                        <a href="{{ route('product.export') }}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Export Produk</a>
+                    @endcan
+                </div>
 
                 <table class="w-full mt-6 text-left border-collapse">
                     <thead>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
@@ -49,6 +50,7 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::findOrFail($id);
+        Gate::authorize('update', $product);
         return view('product.edit', compact('product'));
     }
 
@@ -63,6 +65,7 @@ class ProductController extends Controller
 
         // Update data
         $product = Product::findOrFail($id);
+        Gate::authorize('update', $product);
         $product->update([
             'name'  => $request->name,
             'qty'   => $request->qty,
@@ -75,8 +78,19 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
+        Gate::authorize('delete', $product);
         $product->delete();
 
         return redirect()->route('product.index')->with('success', 'Data produk berhasil dihapus!');
+    }
+
+    public function export()
+    {
+        return response()->streamDownload(function () {
+            echo "ID,Name,Qty,Price\n";
+            foreach (Product::all() as $product) {
+                echo "{$product->id},{$product->name},{$product->qty},{$product->price}\n";
+            }
+        }, 'products.csv');
     }
 }

@@ -6,6 +6,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -21,14 +23,8 @@ class ProductController extends Controller
         return view('product.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        // Validasi Input
-        $request->validate([
-            'name'  => 'required|string|max:255',
-            'qty'   => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-        ]);
 
         // Insert ke database
         Product::create([
@@ -54,14 +50,8 @@ class ProductController extends Controller
         return view('product.edit', compact('product'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateProductRequest $request, string $id)
     {
-        // Validasi Input
-        $request->validate([
-            'name'  => 'required|string|max:255',
-            'qty'   => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-        ]);
 
         // Update data
         $product = Product::findOrFail($id);

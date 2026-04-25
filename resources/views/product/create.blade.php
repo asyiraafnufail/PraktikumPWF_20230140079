@@ -13,19 +13,19 @@
                     @csrf
                     <div class="mb-4">
                         <label class="block text-gray-700">Nama Produk</label>
-                        <input type="text" name="name" value="{{ old('name') }}" class="w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
+                        <input type="text" name="name" value="{{ old('name') }}" class="w-full mt-1 border-gray-300 rounded-md shadow-sm">
                         @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-gray-700">Kuantitas (Qty)</label>
-                        <input type="number" name="qty" value="{{ old('qty') }}" class="w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
+                        <input type="number" name="qty" value="{{ old('qty') }}" class="w-full mt-1 border-gray-300 rounded-md shadow-sm">
                         @error('qty') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-gray-700">Harga (Price)</label>
-                        <input type="number" step="0.01" name="price" value="{{ old('price') }}" class="w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
+                        <input type="number" step="0.01" name="price" value="{{ old('price') }}" class="w-full mt-1 border-gray-300 rounded-md shadow-sm">
                         @error('price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 

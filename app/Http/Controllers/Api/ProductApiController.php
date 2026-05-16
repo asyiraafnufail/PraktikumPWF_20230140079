@@ -97,12 +97,11 @@ class ProductApiController extends Controller
 
             // Sesuaikan validasi dengan kolom yang ada di database kamu
             $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'price' => 'required|numeric',
-                'stock' => 'required|integer',
-                'category_id' => 'required|exists:categories,id',
-            ]);
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'qty' => 'required|integer',  // Gunakan qty, bukan stock
+            'category_id' => 'required|exists:category,id',
+        ]);
 
             $product->update($validated);
 
@@ -111,8 +110,13 @@ class ProductApiController extends Controller
                 'data' => $product
             ], 200);
         } catch (\Throwable $e) {
-            Log::error('Error saat mengubah produk', ['message' => $e->getMessage()]);
-            return response()->json(['message' => 'Terjadi kesalahan server'], 500);
+            // --- UBAH BAGIAN CATCH INI ---
+            return response()->json([
+                'message' => 'Terjadi kesalahan server',
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
         }
     }
 

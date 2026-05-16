@@ -6,12 +6,6 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductApiController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-*/
-
 // Route untuk mendapatkan Access Token (Login API)
 Route::post('/login', [AuthController::class, 'getToken']);
 
